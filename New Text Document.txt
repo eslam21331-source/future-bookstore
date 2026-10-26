@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة المستقبل - لطباعة وتوفير الكتب الخارجية والمذكرات</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                        },
+                        brand: {
+                            gold: '#D4AF37',
+                            navy: '#0F172A',
+                            accent: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        amiri: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .font-quran {
+            font-family: 'Amiri', serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-amber-50/40 text-gray-800 dark:bg-gray-950 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-amber-200/50 dark:border-gray-800 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Branding -->
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-tr from-amber-600 to-amber-400 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-amber-500/20 transform rotate-3">
+                        <i class="fa-solid fa-book-open-reader text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-black tracking-tight text-amber-900 dark:text-amber-400 font-amiri leading-none">مكتبة المستقبل</h1>
+                        <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mt-1">
+                            <i class="fa-solid fa-user-tie text-[10px] ml-1"></i> إدارة أ/ إسلام بحيري
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Main Actions -->
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Branch Badge -->
+                    <div class="hidden md:flex items-center gap-2 bg-amber-100/60 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 px-3 py-1.5 rounded-full text-xs font-bold border border-amber-300/40 dark:border-amber-800/50">
+                        <i class="fa-solid fa-location-dot text-amber-600 dark:text-amber-400"></i>
+                        <span>دمنهور - بوابة المساحة - خلف بسيوني</span>
+                    </div>
+
+                    <!-- Contact Phone -->
+                    <a href="tel:01557178189" class="hidden sm:flex items-center gap-2 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>01557178189</span>
+                    </a>
+
+                    <!-- Toggle Dark Mode -->
+                    <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2.5 text-gray-600 dark:text-gray-300 hover:bg-amber-100 dark:hover:bg-gray-800 rounded-xl transition">
+                        <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                        <i class="fa-solid fa-sun text-lg hidden dark:block text-amber-400"></i>
+                    </button>
+
+                    <!-- Cart Button -->
+                    <button onclick="openCartModal()" class="relative p-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl shadow-md transition flex items-center justify-center">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cartBadge" class="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900">0</span>
+                    </button>
+
+                    <!-- Admin Button -->
+                    <button onclick="openAdminModal()" class="p-2.5 text-gray-700 dark:text-gray-200 hover:bg-amber-100 dark:hover:bg-gray-800 rounded-xl border border-amber-300/50 dark:border-gray-700 transition" title="لوحة التحكم الإدارية">
+                        <i class="fa-solid fa-user-gear text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-b from-amber-100/70 via-amber-50/30 to-transparent dark:from-gray-900 dark:via-gray-950 dark:to-transparent py-10 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-200/60 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold mb-4">
+                <i class="fa-solid fa-print"></i>
+                <span>متخصصون في طباعة الكتب الخارجية والمذكرات الدراسية بأفضل الأسعار</span>
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
+                أحدث الكتب الخارجية والطباعة لكافة المراحل
+            </h2>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto font-medium">
+                تصفح الكتب الخارجية المتاحة، أو احسب تكلفة طباعة مذكراتك الخاصة بسهولة. التوصيل متوفر لأي مكان وسيتم الاتفاق على تكلفة الشحن مباشرة عبر الواتساب.
+            </p>
+
+            <!-- Branch Info Card -->
+            <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-4 bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-sm border border-amber-200/60 dark:border-gray-800 text-sm">
+                <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200 font-bold">
+                    <i class="fa-solid fa-location-dot text-amber-600"></i>
+                    <span>العنوان: دمنهور - بوابة المساحة - خلف بسيوني</span>
+                </div>
+                <div class="h-4 w-px bg-amber-300 dark:bg-gray-700 hidden sm:block"></div>
+                <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200 font-bold">
+                    <i class="fa-solid fa-phone text-emerald-600"></i>
+                    <span>تلفون / واتساب: 01557178189</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- Custom Print Calculator Module -->
+        <section class="mb-12 bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 shadow-md border border-amber-200/60 dark:border-gray-800">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">
+                <div>
+                    <span class="text-xs font-bold text-amber-600 dark:text-amber-400 tracking-widest uppercase">خدمة الطباعة حسب الطلب</span>
+                    <h3 class="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-amber-500"></i>
+                        حاسبة طباعة المذكرات والكتب الخارجية
+                    </h3>
+                </div>
+                <div class="text-xs bg-amber-50 dark:bg-gray-800 text-amber-800 dark:text-amber-300 px-3 py-2 rounded-xl border border-amber-200 dark:border-gray-700">
+                    <i class="fa-solid fa-circle-info ml-1"></i> احسب التكلفة وأضفها فوراً لسلة الشراء
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">اسم المادة / المذكرة</label>
+                    <input type="text" id="calcTitle" placeholder="مثلاً: مذكرات رياضيات 3 ثانوي" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">عدد الصفحات</label>
+                    <input type="number" id="calcPages" value="50" min="1" oninput="calculateCustomPrint()" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">نوع الطباعة</label>
+                    <select id="calcType" onchange="calculateCustomPrint()" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
+                        <option value="bw">أسود وأبيض (0.50 ج.م / صفحة)</option>
+                        <option value="color">ألوان كاملاً (1.50 ج.م / صفحة)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">نوع التجليد والتغليف</label>
+                    <select id="calcBinding" onchange="calculateCustomPrint()" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 outline-none">
+                        <option value="wire">سلك حلزوني + غلاف بلاستيك (+15 ج.م)</option>
+                        <option value="hard">كارتون مقوى فاخر (+30 ج.م)</option>
+                        <option value="staple">دبوس عادي (+5 ج.م)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Price Output & Add to Cart -->
+            <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-semibold text-gray-600 dark:text-gray-400">التكلفة التقديرية:</span>
+                    <span id="calcTotalPrice" class="text-2xl font-black text-amber-600 dark:text-amber-400">40 ج.م</span>
+                </div>
+                <button onclick="addCustomPrintToCart()" class="w-full sm:w-auto px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-cart-plus"></i>
+                    <span>إضافة الطباعة المخصصة للسلة</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Filters & Search Toolbar -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+            <!-- Search Input -->
+            <div class="relative w-full md:w-96">
+                <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="ابحث باسم الكتاب أو المادة أو المرحلة..." class="w-full bg-white dark:bg-gray-900 border border-amber-200/70 dark:border-gray-800 rounded-2xl pr-11 pl-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 outline-none shadow-sm transition">
+            </div>
+
+            <!-- Stage Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+                <button onclick="setCategoryFilter('all')" class="cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-amber-500 text-white">الكل</button>
+                <button onclick="setCategoryFilter('primary')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-amber-200/60 dark:border-gray-800">الابتدائي</button>
+                <button onclick="setCategoryFilter('prep')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-amber-200/60 dark:border-gray-800">الإعدادي</button>
+                <button onclick="setCategoryFilter('secondary')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-amber-200/60 dark:border-gray-800">الثانوي</button>
+                <button onclick="setCategoryFilter('notes')" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-amber-200/60 dark:border-gray-800">مذكرات خاصة</button>
+            </div>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Content Load -->
+        </div>
+
+        <!-- Empty State UI -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white dark:bg-gray-900 rounded-3xl border border-dashed border-amber-300 dark:border-gray-800 p-8">
+            <div class="w-20 h-20 bg-amber-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-600 dark:text-amber-400">
+                <i class="fa-solid fa-books text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">المكتبة فارغة حالياً</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
+                لم يتم إضافة أية كتب خارجية أو مذكرات بعد. يمكنك البدء بإضافة منتجاتك من لوحة التحكم الإدارية (أ/ إسلام بحيري).
+            </p>
+            <button onclick="loadSampleProducts()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs shadow-md transition">
+                <i class="fa-solid fa-wand-magic-sparkles ml-1"></i> تحميل عينة كتب تجريبية
+            </button>
+        </div>
+    </main>
+
+    <!-- Shopping Cart Slide-Over / Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden transition-opacity">
+        <!-- Backdrop -->
+        <div onclick="closeCartModal()" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+        <div class="fixed inset-y-0 left-0 max-w-full flex pl-0 sm:pl-10">
+            <div class="w-screen max-w-md bg-white dark:bg-gray-900 shadow-2xl flex flex-col justify-between">
+                
+                <!-- Cart Header -->
+                <div class="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-amber-50/50 dark:bg-gray-800/50">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-cart-shopping text-amber-600 text-xl"></i>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">سلة المشتريات</h3>
+                    </div>
+                    <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cartItemsContainer" class="p-5 overflow-y-auto flex-1 space-y-4">
+                    <!-- Dynamic Cart Items -->
+                </div>
+
+                <!-- Cart Footer & Checkout Form -->
+                <div class="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/80">
+                    <!-- Total Calculation -->
+                    <div class="space-y-2 mb-4 text-sm">
+                        <div class="flex justify-between font-extrabold text-base text-gray-900 dark:text-white pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <span>الإجمالي الكلي للكتب:</span>
+                            <span id="cartGrandTotal" class="text-amber-600 dark:text-amber-400">0 ج.م</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button onclick="openCheckoutSection()" id="checkoutStepBtn" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <span>إكمال الطلب الشراء</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+
+                    <!-- Shipping Negotiation Notice -->
+                    <div class="mt-3 text-center">
+                        <span class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-3 py-1.5 rounded-lg border border-amber-200 dark:border-amber-900 inline-block">
+                            <i class="fa-solid fa-truck-fast ml-1"></i> يتم تحديد وقيمة مصاريف الشحن والتوصيل بالاتفاق عبر الواتساب
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white dark:bg-gray-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-amber-200/50 dark:border-gray-800">
+                <button onclick="closeCheckoutModal()" class="absolute top-5 left-5 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice text-amber-500"></i>
+                    بيانات توصيل الطلب والشحن
+                </h3>
+
+                <form id="checkoutForm" onsubmit="handleFinalCheckout(event)" class="space-y-4 text-sm">
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">الاسم بالكامل *</label>
+                        <input type="text" id="custName" required placeholder="أدخل اسمك الكريم" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">رقم الهاتف (واتساب) *</label>
+                        <input type="tel" id="custPhone" required placeholder="01xxxxxxxxx" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">المحافظة والمدينة *</label>
+                        <input type="text" id="custGov" required placeholder="مثلاً: البحيرة - دمنهور" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">العنوان التفصيلي بالتفصيل *</label>
+                        <textarea id="custAddress" required rows="2" placeholder="الشارع، رقم المبنى، العلامة المميزة..." class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                    </div>
+
+                    <!-- Shipping Price Notice -->
+                    <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200 dark:border-amber-900 text-amber-800 dark:text-amber-300 text-xs">
+                        <i class="fa-solid fa-truck-ramp-box ml-1"></i>
+                        <strong>ملاحظة الشحن:</strong> تكلفة التوصيل والشحن سيتم إبلاغك بها والاتفاق عليها عبر الواتساب فور إرسال الطلب.
+                    </div>
+
+                    <!-- Payment Methods Section -->
+                    <div class="pt-2">
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-2">طريقة الدفع الفضلى *</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="border dark:border-gray-700 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:bg-amber-50/50 dark:hover:bg-gray-800">
+                                <input type="radio" name="paymentMethod" value="vodafone" checked onchange="toggleWalletNotice(true)">
+                                <span class="font-bold text-xs">فودافون كاش / InstaPay</span>
+                            </label>
+                            <label class="border dark:border-gray-700 rounded-xl p-3 flex items-center gap-2 cursor-pointer hover:bg-amber-50/50 dark:hover:bg-gray-800">
+                                <input type="radio" name="paymentMethod" value="cod" onchange="toggleWalletNotice(false)">
+                                <span class="font-bold text-xs">الدفع عند الاستلام</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Vodafone / InstaPay Instructions -->
+                    <div id="walletInstructions" class="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-xs space-y-2">
+                        <p class="font-bold text-emerald-900 dark:text-emerald-300">
+                            <i class="fa-solid fa-mobile-screen ml-1"></i> رقم التحويل محفظة فودافون كاش أو InstaPay:
+                        </p>
+                        <div class="flex items-center justify-between bg-white dark:bg-gray-900 p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700">
+                            <span class="font-mono text-base font-black text-emerald-700 dark:text-emerald-400">01557178189</span>
+                            <button type="button" onclick="copyNumber('01557178189')" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[11px] font-bold">نسخ الرقم</button>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 text-[11px]">
+                            * يرجى إرفاق صوره الإشعار أو ذكر رقم الموبايل المحول منه عند إرسال الفاتورة بالواتساب.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-base">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>تأكيد الطلب وإرسال عبر الواتساب</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Control Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" onclick="closeAdminModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white dark:bg-gray-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-amber-200/50 dark:border-gray-800">
+                <button onclick="closeAdminModal()" class="absolute top-5 left-5 text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <!-- Password Protection Step -->
+                <div id="adminAuthStep">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-lock text-amber-500"></i>
+                        لوحة إدارة المتجر (أ/ إسلام بحيري)
+                    </h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">أدخل كلمة المرور للوصول لإدارة المنتجات وإضافة الكتب</p>
+                    <div class="space-y-4">
+                        <input type="password" id="adminPassInput" placeholder="كلمة المرور الافتراضية: 1234" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                        <button onclick="verifyAdminPass()" class="w-full py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition">دخول لوحة التحكم</button>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard Main Step -->
+                <div id="adminDashboardStep" class="hidden">
+                    <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-4 mb-6">
+                        <h3 class="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-boxes-packing text-amber-500"></i>
+                            إضافة كتاب خارجي أو مذكرة جديدة
+                        </h3>
+                        <button onclick="logoutAdmin()" class="text-xs text-red-500 hover:underline">تسجيل الخروج</button>
+                    </div>
+
+                    <form onsubmit="handleAddNewProduct(event)" class="space-y-4 text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">اسم الكتاب / المذكرة *</label>
+                                <input type="text" id="prodTitle" required placeholder="مثلاً: الامتحان علوم 3 إعدادي" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">المرحلة / التصنيف *</label>
+                                <select id="prodCategory" required class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                                    <option value="primary">الابتدائي</option>
+                                    <option value="prep">الإعدادي</option>
+                                    <option value="secondary">الثانوي</option>
+                                    <option value="notes">مذكرات طباعة</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">السعر بالجنيه المصري (EGP) *</label>
+                                <input type="number" id="prodPrice" required placeholder="120" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">رابط صورة الكتاب (اختياري)</label>
+                                <input type="url" id="prodImage" placeholder="https://..." class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">وصف الكتاب أو المادة الدراسية</label>
+                            <textarea id="prodDesc" rows="2" placeholder="المادة، الصف الدراسي، الترم الأول/الثاني..." class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                        </div>
+
+                        <div class="flex items-center gap-3 pt-2">
+                            <button type="submit" class="flex-1 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition text-xs">
+                                <i class="fa-solid fa-plus ml-1"></i> إضافة المنتج للمتجر
+                            </button>
+                            <button type="button" onclick="loadSampleProducts()" class="px-4 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-bold rounded-xl text-xs transition">
+                                تحميل عينات كتب
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm border border-amber-500/30">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
+        <span id="toastMsg">تم التحديث بنجاح</span>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="mt-auto bg-white dark:bg-gray-900 border-t border-amber-200/50 dark:border-gray-800 py-8 text-xs text-gray-500 dark:text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <p class="font-extrabold text-amber-900 dark:text-amber-400 text-sm">مكتبة المستقبل - لطباعة وتوفير الكتب الخارجية والمذكرات</p>
+            <p>إدارة: أ/ إسلام بحيري - دمنهور (بوابة المساحة - خلف بسيوني) - هاتف: 01557178189</p>
+            <p class="text-[11px] text-gray-400 dark:text-gray-600">جميع الحقوق محفوظة &copy; 2026 مكتبة المستقبل</p>
+        </div>
+    </footer>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Store Application State
+        let products = JSON.parse(localStorage.getItem('future_bookstore_products')) || [];
+        let cart = JSON.parse(localStorage.getItem('future_bookstore_cart')) || [];
+        let activeCategory = 'all';
+
+        // Sample Educational Books Demo Data
+        const sampleBooks = [
+            { id: 101, title: 'الامتحان في اللغة العربية - الصف الثالث الثانوي', category: 'secondary', price: 195, image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80', desc: 'الشرح والتدريبات وتجميع الامتحانات للأعوام السابقة' },
+            { id: 102, title: 'المعاصر في الرياضيات - الصف الثاني الإعدادي', category: 'prep', price: 140, image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', desc: 'كتاب الشرح + بنك الأسئلة والتمارين الإضافية' },
+            { id: 103, title: 'سلاح التلميذ العلوم - الصف الخامس الابتدائي', category: 'primary', price: 115, image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80', desc: 'شرح المنهج الجديد بطريقة تفاعلية ومبسطة' },
+            { id: 104, title: 'الأضواء في الدراسات - الصف الأول الإعدادي', category: 'prep', price: 125, image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80', desc: 'خرائط ملونة وشرح وافي لمقرر التاريخ والجغرافيا' }
+        ];
+
+        // Core App Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+            calculateCustomPrint();
+            
+            // Check Theme Preference
+            if (localStorage.getItem('future_theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        });
+
+        // Toggle Dark Mode
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('future_theme', isDark ? 'dark' : 'light');
+        }
+
+        // Render Product List
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            let filtered = products.filter(p => {
+                const matchCat = (activeCategory === 'all') || (p.category === activeCategory);
+                const matchSearch = p.title.toLowerCase().includes(searchVal) || (p.desc && p.desc.toLowerCase().includes(searchVal));
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(p => `
+                <div class="bg-white dark:bg-gray-900 rounded-3xl overflow-hidden border border-amber-200/60 dark:border-gray-800 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden bg-amber-50 dark:bg-gray-800">
+                            <img src="${p.image || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=400&q=80'}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-amber-500/90 backdrop-blur-md text-white text-[10px] font-extrabold px-3 py-1 rounded-full shadow">
+                                ${getCategoryBadge(p.category)}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-extrabold text-gray-900 dark:text-white text-base mb-2 leading-snug line-clamp-2">${p.title}</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-4 leading-relaxed">${p.desc || 'كتب خارجية ومذكرات متميزة طبعة حديثة.'}</p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 pt-0 flex items-center justify-between border-t border-gray-100 dark:border-gray-800/60 mt-auto">
+                        <div class="mt-3">
+                            <span class="text-xs text-gray-400 block font-semibold">السعر:</span>
+                            <span class="text-xl font-black text-amber-600 dark:text-amber-400">${p.price} <span class="text-xs font-bold">ج.م</span></span>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="mt-3 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>أضف للسلة</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get Category Badge Label
+        function getCategoryBadge(cat) {
+            switch (cat) {
+                case 'primary': return 'المرحلة الابتدائية';
+                case 'prep': return 'المرحلة الإعدادية';
+                case 'secondary': return 'المرحلة الثانوية';
+                case 'notes': return 'مذكرات طباعة';
+                default: return 'كتاب خارجي';
+            }
+        }
+
+        // Category Filter Tabs
+        function setCategoryFilter(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.classList.add('bg-white', 'dark:bg-gray-900', 'text-gray-700', 'dark:text-gray-300', 'border', 'border-amber-200/60', 'dark:border-gray-800');
+            });
+            event.target.classList.add('bg-amber-500', 'text-white');
+            event.target.classList.remove('bg-white', 'dark:bg-gray-900', 'text-gray-700', 'dark:text-gray-300', 'border');
+            renderProducts();
+        }
+
+        // Filter Products Input
+        function filterProducts() {
+            renderProducts();
+        }
+
+        // Custom Print Calculation
+        function calculateCustomPrint() {
+            const pages = parseInt(document.getElementById('calcPages').value) || 0;
+            const type = document.getElementById('calcType').value;
+            const binding = document.getElementById('calcBinding').value;
+
+            let pageRate = (type === 'bw') ? 0.50 : 1.50;
+            let bindingCost = (binding === 'wire') ? 15 : (binding === 'hard') ? 30 : 5;
+
+            let total = (pages * pageRate) + bindingCost;
+            document.getElementById('calcTotalPrice').textContent = `${total.toFixed(0)} ج.م`;
+            return total;
+        }
+
+        // Add Custom Print Job to Cart
+        function addCustomPrintToCart() {
+            const title = document.getElementById('calcTitle').value.trim() || 'مذكرة مخصصة للطباعة';
+            const pages = parseInt(document.getElementById('calcPages').value) || 1;
+            const typeText = (document.getElementById('calcType').value === 'bw') ? 'أبيض وأسود' : 'ألوان';
+            const price = calculateCustomPrint();
+
+            const customItem = {
+                id: 'custom_' + Date.now(),
+                title: `طباعة: ${title} (${pages} صفحة - ${typeText})`,
+                price: price,
+                qty: 1,
+                isCustom: true
+            };
+
+            cart.push(customItem);
+            saveCart();
+            showToast('تمت إضافة طلب الطباعة إلى السلة بنجاح');
+            openCartModal();
+        }
+
+        // Add Regular Product to Cart
+        function addToCart(prodId) {
+            const item = products.find(p => p.id === prodId);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === prodId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            saveCart();
+            showToast(`تمت إضافة "${item.title}" للسلة`);
+        }
+
+        // Update Quantity in Cart
+        function updateCartQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+
+            saveCart();
+        }
+
+        // Save Cart & Update Interface
+        function saveCart() {
+            localStorage.setItem('future_bookstore_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        // UI Refresh for Cart
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartBadge').textContent = count;
+
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3"></i>
+                        <p class="text-xs font-bold">سلة التسوق فارغة حالياً</p>
+                    </div>
+                `;
+                document.getElementById('cartGrandTotal').textContent = `0 ج.م`;
+                return;
+            }
+
+            let grandTotal = 0;
+            container.innerHTML = cart.map(item => {
+                let itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+                return `
+                    <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-800/60 p-3.5 rounded-2xl border border-gray-100 dark:border-gray-800">
+                        <div class="flex-1 pl-3">
+                            <h5 class="text-xs font-bold text-gray-900 dark:text-white line-clamp-1">${item.title}</h5>
+                            <span class="text-xs text-amber-600 dark:text-amber-400 font-extrabold">${item.price} ج.م</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateCartQty('${item.id}', -1)" class="w-7 h-7 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-black border border-gray-200 dark:border-gray-600 flex items-center justify-center">-</button>
+                            <span class="text-xs font-extrabold w-4 text-center">${item.qty}</span>
+                            <button onclick="updateCartQty('${item.id}', 1)" class="w-7 h-7 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-black border border-gray-200 dark:border-gray-600 flex items-center justify-center">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('cartGrandTotal').textContent = `${grandTotal} ج.م`;
+        }
+
+        // Modal Controls
+        function openCartModal() { document.getElementById('cartModal').classList.remove('hidden'); }
+        function closeCartModal() { document.getElementById('cartModal').classList.add('hidden'); }
+        
+        function openCheckoutSection() {
+            if (cart.length === 0) {
+                showToast('السلة فارغة، يرجى إضافة كتب أولاً');
+                return;
+            }
+            closeCartModal();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+        function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
+
+        function toggleWalletNotice(show) {
+            const inst = document.getElementById('walletInstructions');
+            if (show) inst.classList.remove('hidden');
+            else inst.classList.add('hidden');
+        }
+
+        // Send Order via WhatsApp
+        function handleFinalCheckout(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const gov = document.getElementById('custGov').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const payMethod = document.querySelector('input[name="paymentMethod"]:checked').value === 'vodafone' ? 'فودافون كاش / InstaPay' : 'الدفع عند الاستلام';
+
+            let itemsList = cart.map((item, idx) => `${idx + 1}. ${item.title} (العدد: ${item.qty}) - السعر: ${item.price * item.qty} ج.م`).join('\n');
+            let booksTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            let msg = `*طلب جديد - مكتبة المستقبل* 📚\n`;
+            msg += `---------------------------------\n`;
+            msg += `👤 *اسم العميل:* ${name}\n`;
+            msg += `📞 *رقم الهاتف:* ${phone}\n`;
+            msg += `📍 *المحافظة والمنطقة:* ${gov}\n`;
+            msg += `🏠 *العنوان التفصيلي:* ${address}\n`;
+            msg += `💳 *طريقة الدفع:* ${payMethod}\n`;
+            msg += `---------------------------------\n`;
+            msg += `📖 *الكتب والطلبات:*\n${itemsList}\n`;
+            msg += `---------------------------------\n`;
+            msg += `💰 *إجمالي الكتب:* ${booksTotal} جنيه مصري\n`;
+            msg += `🚚 *مصاريف الشحن والتوصيل:* (يتم تحديده بالاتفاق عبر هذه المحادثة)\n`;
+            msg += `---------------------------------\n`;
+            msg += `شكراً لتواصلك مع مكتبة المستقبل (إدارة أ/ إسلام بحيري)!`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            const whatsappURL = `https://wa.me/201557178189?text=${encodedMsg}`;
+
+            // Reset Cart
+            cart = [];
+            saveCart();
+            closeCheckoutModal();
+
+            // Redirect to WhatsApp
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Admin Modal Controls
+        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+
+        function verifyAdminPass() {
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === '1234') {
+                document.getElementById('adminAuthStep').classList.add('hidden');
+                document.getElementById('adminDashboardStep').classList.remove('hidden');
+            } else {
+                showToast('كلمة المرور غير صحيحة!');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminAuthStep').classList.remove('hidden');
+            document.getElementById('adminDashboardStep').classList.add('hidden');
+            document.getElementById('adminPassInput').value = '';
+        }
+
+        // Add Product via Admin Panel
+        function handleAddNewProduct(e) {
+            e.preventDefault();
+            const title = document.getElementById('prodTitle').value.trim();
+            const category = document.getElementById('prodCategory').value;
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const image = document.getElementById('prodImage').value.trim();
+            const desc = document.getElementById('prodDesc').value.trim();
+
+            const newProd = {
+                id: Date.now(),
+                title,
+                category,
+                price,
+                image,
+                desc
+            };
+
+            products.unshift(newProd);
+            localStorage.setItem('future_bookstore_products', JSON.stringify(products));
+            renderProducts();
+            showToast('تمت إضافة المنتج بنجاح للمتجر');
+            closeAdminModal();
+        }
+
+        // Load Sample Demo Products
+        function loadSampleProducts() {
+            products = [...sampleBooks];
+            localStorage.setItem('future_bookstore_products', JSON.stringify(products));
+            renderProducts();
+            showToast('تم تحميل عينة الكتب بنجاح');
+            closeAdminModal();
+        }
+
+        // Utility: Copy Phone Number
+        function copyNumber(num) {
+            navigator.clipboard.writeText(num);
+            showToast('تم نسخ الرقم للتحويل بنجاح');
+        }
+
+        // Toast Notification System
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
